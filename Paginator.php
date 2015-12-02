@@ -25,7 +25,35 @@ class Paginator extends AbstractPaginatorMethod
 		'full',
 		'full_numbers'
 	];
+	
+	/**
+	 * @var array
+	 */
+	private $defaultOptions = [
+		'limit' => NULL,
+		'totalItems' => 0,
+		'queryKey' => NULL,
+		'adjacentCount' => NULL
+	];
+	
+	/**
+	 * Set default options.
+	 * @param array $options
+	 */
+	public function setDefaultOptions(array $options)
+	{
+		$this->defaultOptions = array_merge($this->defaultOptions, $options);
+	}
 
+	/**
+	 * Get default options.
+	 * @return array
+	 */
+	public function getDefaltOptions()
+	{
+		return $this->defaultOptions;
+	}
+	
 	/**
 	 * Get paginator types.
 	 * @return array
@@ -45,6 +73,27 @@ class Paginator extends AbstractPaginatorMethod
 	}
 	
 	/**
+	 * Check if the supplied options are present in defaultOptions.
+	 * @param array $options
+	 * @return array
+	 */
+	private function _validateDefaultOptions(array $options)
+	{
+		
+		$defaultOptions = $this->getDefaltOptions();
+		
+		if (!array_key_exists('totalItems', $options)) {
+			throw new \Exception("'totalItems' is a required parameter.");
+		}
+
+		foreach ($options as $key => $value) {
+			$defaultOptions[$key] = $value;
+		}
+
+		return $defaultOptions;
+	}
+	
+	/**
 	 * @param string $type
 	 * @param array $options
 	 * @see AbstractFactoryMethod::buildPaginator()
@@ -57,24 +106,28 @@ class Paginator extends AbstractPaginatorMethod
 			throw new \Exception("Paginator type '$type' does not exist.");
 		}
 		
+		$options = $this->_validateDefaultOptions($options);
+		
 		$paginator = NULL;
 		
 		switch ($type) {
 			
 			case 'simple':
-				$paginator = new \KR\PaginatorBundle\Pagers\SimplePaginator($options['limit'], $options['totalItems'], $options['queryKey']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimplePaginator($options['totalItems'], $options['limit'], $options['queryKey']);
 				break;
 			case 'numbers':
-				$paginator = new \KR\PaginatorBundle\Pagers\NumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\NumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
 				break;
 			case 'simple_numbers':
-				$paginator = new \KR\PaginatorBundle\Pagers\SimpleNumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimpleNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
 				break;
-			/*case 'full':
+			case 'full':
+				$paginator = new \KR\PaginatorBundle\Pagers\FullPaginator($options['totalItems'], $options['limit'], $options['queryKey']);
 				break;
 			case 'full_numbers':
+				$paginator = new \KR\PaginatorBundle\Pagers\FullNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
 				break;
-			*/	
+				
 		}
 		
 		return $paginator;

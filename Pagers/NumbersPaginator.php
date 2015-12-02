@@ -22,12 +22,12 @@ class NumbersPaginator extends AbstractNumbersPaginator
 	 * @param string $parameterName
 	 * @param integer $adjacentCount
 	 */
-	function __construct($limit, $totalItems, $parameterName, $adjacentCount)
+	function __construct($totalItems, $limit = NULL, $parameterName = NULL, $adjacentCount = NULL)
 	{
 		/**
 		 * Call parent constructor.
 		 */
-		parent::__construct($limit, $totalItems, $parameterName);
+		parent::__construct($totalItems, $limit, $parameterName);
 		$this->setAdjacentCount($adjacentCount);
 	}
 	
@@ -49,9 +49,9 @@ class NumbersPaginator extends AbstractNumbersPaginator
 		$html = '<ul class="pagination no-margin">';
 		
 		if ($firstAdjacentPage > $firstPage) {
-			$class = $currentPage == 1 ? ' class="active" ' : ' ';
-			$href = $this->addQueryValue(1);
-			$html .= '<li' . $class . '><a href="'. $href .'">1</a></li>';
+			$class = $currentPage == $firstPage ? ' class="active" ' : ' ';
+			$href = $this->addQueryValue($firstPage);
+			$html .= '<li' . $class . '><a href="'. $href .'">' . $firstPage . '</a></li>';
 			if ($firstAdjacentPage > $firstPage + 1) {
 				$html .= '<li><span>...</span></li>';
 			}

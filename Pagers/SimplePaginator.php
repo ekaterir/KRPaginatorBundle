@@ -20,14 +20,13 @@ class SimplePaginator extends AbstractPaginator
 	 * @param integer $limit
 	 * @param integer $totalItems
 	 * @param string $parameterName
-	 * @param integer $adjacentCount
 	 */
-	function __construct($limit, $totalItems, $parameterName)
+	function __construct($totalItems, $limit = NULL, $parameterName = NULL)
 	{
 		/**
 		 * Call parent constructor.
 		 */
-		parent::__construct($limit, $totalItems, $parameterName);
+		parent::__construct($totalItems, $limit, $parameterName);
 	}
 	
 	/**
@@ -44,7 +43,7 @@ class SimplePaginator extends AbstractPaginator
 		$currentPage = $this->getCurrentPage();
 		$html = '<ul class="pagination">';
 		
-		$class = $currentPage == 1 ? ' class="disabled" ' : '' ;
+		$class = $currentPage == $firstPage ? ' class="disabled" ' : '' ;
 		$html .= '<li' . $class . '><a href="' . $this->addQueryValue($this->getPrevious()) . '">Prev</a></li>';
 		
 		$class = $currentPage == $lastPage ? ' class="disabled" ' : '' ;

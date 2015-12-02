@@ -16,17 +16,17 @@ abstract class AbstractPaginator
 	/**
 	 * @var integer
 	 */
-	private $current_page = 0;
+	private $currentPage = 0;
 	
 	/**
 	 * @var integer
 	 */
-	private $total_pages_count = 0;
+	private $totalPagesCount = 0;
 	
 	/**
 	 * @var integer
 	 */
-	private $total_items_count = 0;
+	private $totalItemsCount = 0;
 	
 	/**
 	 * @var integer
@@ -36,29 +36,29 @@ abstract class AbstractPaginator
 	/**
 	 * @var integer
 	 */
-	private $limit = 0;
+	private $limit = 10;
 	
 	/**
 	 * @var string
 	 */
-	private $query_key = 'page';
+	private $queryKey = 'page';
 	
 	/**
 	 * @var array
 	 */
-	private $url_parts = [];
+	private $urlParts = [];
 	
 	/**
 	 * Constructor.
 	 * @param integer $limit
-	 * @param integer $total_items_count
-	 * @param string $query_key
+	 * @param integer $totalItemsCount
+	 * @param string $queryKey
 	 */
-	function __construct($limit, $total_items_count, $query_key)
+	function __construct($totalItemsCount, $limit = NULL, $queryKey = NULL)
 	{
 		$this->setLimit($limit);
-		$this->setTotalItemsCount($total_items_count);
-		$this->setQueryKey($query_key);
+		$this->setTotalItemsCount($totalItemsCount);
+		$this->setQueryKey($queryKey);
 		$this->setTotalPagesCount();
 		$this->setCurrentPage();
 		$this->setOffset();
@@ -75,8 +75,8 @@ abstract class AbstractPaginator
 
 			if (isset($_SERVER['REQUEST_URI'])) {
 
-				$url_parts = parse_url($_SERVER['REQUEST_URI']);
-				$this->url_parts = $url_parts;
+				$urlParts = parse_url($_SERVER['REQUEST_URI']);
+				$this->urlParts = $urlParts;
 				return $this;			
 	
 			}
@@ -94,7 +94,7 @@ abstract class AbstractPaginator
 	 */
 	public function getURLParts()
 	{
-		return $this->url_parts;
+		return $this->urlParts;
 	}
 	
 	/**
@@ -103,16 +103,16 @@ abstract class AbstractPaginator
 	 */
 	public function getQueryKey()
 	{
-		return $this->query_key;
+		return $this->queryKey;
 	}
 	
 	/**
 	 * Set parameter name.
 	 */
-	public function setQueryKey($query_key)
+	public function setQueryKey($queryKey)
 	{
-		if ($query_key != null) {
-			$this->query_key = $query_key;
+		if ($queryKey != null) {
+			$this->queryKey = $queryKey;
 		}
 	}
 	
@@ -122,7 +122,7 @@ abstract class AbstractPaginator
 	 */
 	public function getCurrentPage()
 	{
-		return $this->current_page;
+		return $this->currentPage;
 	}
 	
 	/**
@@ -148,9 +148,9 @@ abstract class AbstractPaginator
 		$parameter = $this->getQueryKey();
 		
 		if (isset($_GET[$parameter])) {
-			$this->current_page = $this->_validateValue($_GET[$parameter]);
+			$this->currentPage = $this->_validateValue($_GET[$parameter]);
 		} else {
-			$this->current_page = 1;
+			$this->currentPage = 1;
 		}
 		
 		return $this;
@@ -162,7 +162,7 @@ abstract class AbstractPaginator
 	 */
 	public function getTotalPagesCount()
 	{
-		return $this->total_pages_count;
+		return $this->totalPagesCount;
 	}
 	
 	/**
@@ -170,7 +170,7 @@ abstract class AbstractPaginator
 	 */
 	public function setTotalPagesCount()
 	{
-		$this->total_pages_count = ceil($this->getTotalItemsCount() / $this->getLimit());
+		$this->totalPagesCount = ceil($this->getTotalItemsCount() / $this->getLimit());
 		return $this;
 	}
 	
@@ -180,15 +180,15 @@ abstract class AbstractPaginator
 	 */
 	public function getTotalItemsCount()
 	{
-		return $this->total_items_count;
+		return $this->totalItemsCount;
 	}
 	
 	/**
 	 * Set total items count.
 	 */
-	public function setTotalItemsCount($total_items_count)
+	public function setTotalItemsCount($totalItemsCount)
 	{
-		$this->total_items_count = $total_items_count;
+		$this->totalItemsCount = $totalItemsCount;
 		return $this;
 	}
 	
@@ -256,6 +256,7 @@ abstract class AbstractPaginator
 	
 	/**
 	 * Set URL query parameter.
+	 * @param integer $value	Page number
 	 */
 	public function addQueryValue($value)
 	{
@@ -263,15 +264,15 @@ abstract class AbstractPaginator
 		try {
 		
 			$params = [];
-			$url_parts = $this->getURLParts();
+			$urlParts = $this->getURLParts();
 			
-			if (isset($url_parts['query'])) {
-				parse_str($url_parts['query'], $params);
+			if (isset($urlParts['query'])) {
+				parse_str($urlParts['query'], $params);
 			}
 			
 			$params[$this->getQueryKey()] = $this->_validateValue($value);
 			
-			return (isset($url_parts['path']) ? $url_parts['path'] : '/') . '?' . http_build_query($params);
+			return (isset($urlParts['path']) ? $urlParts['path'] : '/') . '?' . http_build_query($params);
 	    
 		} catch (\Exception $e) {
 
@@ -286,4 +287,3 @@ abstract class AbstractPaginator
 	abstract public function render();
 
 }
-

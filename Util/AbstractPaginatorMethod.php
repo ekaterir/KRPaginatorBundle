@@ -15,7 +15,7 @@ abstract class AbstractPaginatorMethod
 	
 	/**
 	 * Factory method that instantiates the right Paginator.
-	 * @param integer $type
+	 * @param string $type
 	 * @param array $options
 	 */
 	abstract function buildPaginator($type, array $options);
