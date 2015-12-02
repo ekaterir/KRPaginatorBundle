@@ -1,0 +1,17 @@
+{
+    "name": "kr/kr-paginator-bundle",
+    "type": "symfony-bundle",
+    "description": "Basic Paginator bundle for Symfony2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kate Ryabtseva",
+            "homepage": "http://github.com/ekaterir"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "KR\\PaginatorBundle\\": ""
+        }
+    }
+}
