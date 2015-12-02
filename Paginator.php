@@ -1,14 +1,14 @@
 <?php
 
 /**
- * KR/PaginatorBundle/Pagination/Paginator.php
+ * KR/PaginatorBundle/Paginator.php
  *
  * Paginator instantiates the right classes based on the paginator type.
  *
  * @author     Kate Ryabtseva <kate.ryabtseva@gmail.com>
  */
 
-namespace KR\PaginatorBundle\Pagination;
+namespace KR\PaginatorBundle;
 
 use KR\PaginatorBundle\Util\AbstractPaginatorMethod;
 
@@ -62,13 +62,13 @@ class Paginator extends AbstractPaginatorMethod
 		switch ($type) {
 			
 			case 'simple':
-				$paginator = new \KR\PaginatorBundle\Paginators\SimplePaginator($options['limit'], $options['totalItems'], $options['queryKey']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimplePaginator($options['limit'], $options['totalItems'], $options['queryKey']);
 				break;
 			case 'numbers':
-				$paginator = new \KR\PaginatorBundle\Paginators\NumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\NumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
 				break;
 			case 'simple_numbers':
-				$paginator = new \KR\PaginatorBundle\Paginators\SimpleNumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimpleNumbersPaginator($options['limit'], $options['totalItems'], $options['queryKey'], $options['adjacentCount']);
 				break;
 			/*case 'full':
 				break;

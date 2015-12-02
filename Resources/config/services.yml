@@ -1,3 +1,3 @@
 services:
     kr_paginator:
-        class: KR\PaginatorBundle\Pagination\Paginator
+        class: KR\PaginatorBundle\Paginator
