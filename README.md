@@ -8,6 +8,8 @@ This is a simple bundle with 5 types of pagers (same as DataTables):
 * *full* - First, Next, Previous, Last buttons;
 * *full_numbers* - First, Next, Previous, Last, and Number buttons.
 
+No configurations are necessary.
+
 #Usage#
 
 ##In the controller##
@@ -15,6 +17,8 @@ This is a simple bundle with 5 types of pagers (same as DataTables):
 ```php
 <?php
 // Acme/Bundle/Controller/DefaultController.php
+
+// ...
 
 public function indexAction()
 {
@@ -38,7 +42,20 @@ public function indexAction()
 	]);
 }
 
-// ...
+```
+
+##In the view##
+
+```twig
+
+{{ paginator|raw }}
+
+<ul>
+{% for result in results %}
+	<li>{{ result.name }}</li>
+{% endfor %}
+</ul>
+
 ```
 
 Installation
