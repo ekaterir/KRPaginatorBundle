@@ -46,7 +46,7 @@ class SimpleNumbersPaginator extends AbstractNumbersPaginator
 		$this->setAdjacentPages($firstPage, $currentPage, $lastPage);
 		$firstAdjacentPage = $this->getFirstAdjacentPage();
 		$lastAdjacentPage = $this->getLastAdjacentPage();
-		$html = '<ul class="pagination no-margin">';
+		$html = '<ul class="pagination">';
 		
 		$class = $currentPage == $firstPage ? ' class="disabled" ' : '' ;
 		

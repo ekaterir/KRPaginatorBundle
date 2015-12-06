@@ -1,13 +1,23 @@
 #About KRPaginatorBundle#
 
-This is a simple bundle with 5 types of pagers:
+This is a simple bundle with 5 types of pagers (same as DataTables):
 
-* simple
-* numbers
-* simple_numbers
-* full
-* full_numbers
+* simple - Next and Previous buttons;
+* numbers - Number buttons;
+* simple_numbers - Next, Previous, and Number buttons;
+* full - First, Next, Previous, Last buttons;
+* full_numbers - First, Next, Previous, Last, and Number buttons.
 
+#Usage#
+
+##In the controller##
+
+```php
+<?php
+// Acme/Bundle/Controller/DefaultController.php
+
+// ...
+```
 
 Installation
 ============
