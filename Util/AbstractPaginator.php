@@ -188,8 +188,11 @@ abstract class AbstractPaginator
 	 */
 	public function setTotalItemsCount($totalItemsCount)
 	{
-		$this->totalItemsCount = $totalItemsCount;
-		return $this;
+		if ($totalItemsCount != null && is_numeric($totalItemsCount)) {
+			$this->totalItemsCount = $totalItemsCount;
+			return $this;
+		}
+		throw new \Exception('Total items must be a number.');
 	}
 	
 	/**
@@ -224,7 +227,9 @@ abstract class AbstractPaginator
 	 */
 	public function setLimit($limit)
 	{
-		$this->limit = $limit;
+		if ($limit != null && is_numeric($limit)) {
+			$this->limit = $limit;
+		}
 		return $this;
 	}
 	

@@ -83,7 +83,7 @@ class Paginator extends AbstractPaginatorMethod
 		$defaultOptions = $this->getDefaltOptions();
 		
 		if (!array_key_exists('totalItems', $options)) {
-			throw new \Exception("'totalItems' is a required parameter.");
+			throw new \Exception("KRPaginator: 'totalItems' is a required parameter.");
 		}
 
 		foreach ($options as $key => $value) {
@@ -103,7 +103,7 @@ class Paginator extends AbstractPaginatorMethod
 	{
 
 		if (!in_array($type, $this->paginatorTypes)) {
-			throw new \Exception("Paginator type '$type' does not exist.");
+			throw new \Exception("KRPaginator: paginator type '$type' does not exist.");
 		}
 		
 		$options = $this->_validateDefaultOptions($options);

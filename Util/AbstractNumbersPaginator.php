@@ -76,7 +76,7 @@ abstract class AbstractNumbersPaginator extends AbstractPaginator
 	 */
 	public function setAdjacentCount($adjacentCount)
 	{
-		if ($adjacentCount != null) {
+		if ($adjacentCount != null && is_numeric($adjacentCount)) {
 			$this->adjacentCount = $adjacentCount;
 		}
 		return $this;
