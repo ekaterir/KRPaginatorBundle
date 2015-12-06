@@ -2,11 +2,11 @@
 
 This is a simple bundle with 5 types of pagers (same as DataTables):
 
-* simple - Next and Previous buttons;
-* numbers - Number buttons;
-* simple_numbers - Next, Previous, and Number buttons;
-* full - First, Next, Previous, Last buttons;
-* full_numbers - First, Next, Previous, Last, and Number buttons.
+* *simple* - Next and Previous buttons;
+* *numbers* - Number buttons;
+* *simple_numbers* - Next, Previous, and Number buttons;
+* *full* - First, Next, Previous, Last buttons;
+* *full_numbers* - First, Next, Previous, Last, and Number buttons.
 
 #Usage#
 
@@ -15,6 +15,28 @@ This is a simple bundle with 5 types of pagers (same as DataTables):
 ```php
 <?php
 // Acme/Bundle/Controller/DefaultController.php
+
+public function indexAction()
+{
+	$count = $repository->getAllUsersCount();
+
+	$paginator = $this->get('kr_paginator')->buildPaginator('simple_numbers', [
+		'totalItems' 	=> $count,	// required
+		'limit' 	=> 5,		// optional (default is 10)
+		'queryKey' 	=> 'p',		// optional (default is 'page')
+		'adjacentCount'	=> 3		// optional (default is 2)
+	]);
+
+	$limit = $paginator->getLimit();
+	$offset = $paginator->getOffset();
+
+	$results = $repository->getAllUsers($limit, $offset);
+
+	return $this->render('Bundle:Default:index.html.twig', [
+		'results' 	=> $results,
+		'paginator' 	=> $paginator->render()
+	]);
+}
 
 // ...
 ```
