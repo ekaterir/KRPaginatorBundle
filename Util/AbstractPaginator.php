@@ -54,7 +54,7 @@ abstract class AbstractPaginator
 	 * @param integer $totalItemsCount
 	 * @param string $queryKey
 	*/
-	function __construct($totalItemsCount, $limit = NULL, $queryKey = NULL, $currentPage = null)
+	function __construct($totalItemsCount, $limit = NULL, $queryKey = NULL, $currentPage = NULL)
 	{
 		$this->setLimit($limit);
 		$this->setTotalItemsCount($totalItemsCount);

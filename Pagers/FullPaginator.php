@@ -21,12 +21,12 @@ class FullPaginator extends AbstractPaginator
 	 * @param integer $totalItems
 	 * @param string $parameterName
 	 */
-	function __construct($totalItems, $limit = NULL, $parameterName = NULL)
+	function __construct($totalItems, $limit = NULL, $parameterName = NULL, $currentPage = NULL)
 	{
 		/**
 		 * Call parent constructor.
 		 */
-		parent::__construct($totalItems, $limit, $parameterName);
+		parent::__construct($totalItems, $limit, $parameterName, $currentPage);
 	}
 
 	/**

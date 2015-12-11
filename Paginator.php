@@ -33,7 +33,8 @@ class Paginator extends AbstractPaginatorMethod
 		'limit' => NULL,
 		'totalItems' => 0,
 		'queryKey' => NULL,
-		'adjacentCount' => NULL
+		'adjacentCount' => NULL,
+		'currentPage' => NULL
 	];
 	
 	/**
@@ -113,19 +114,19 @@ class Paginator extends AbstractPaginatorMethod
 		switch ($type) {
 			
 			case 'simple':
-				$paginator = new \KR\PaginatorBundle\Pagers\SimplePaginator($options['totalItems'], $options['limit'], $options['queryKey']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimplePaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['currentPage']);
 				break;
 			case 'numbers':
-				$paginator = new \KR\PaginatorBundle\Pagers\NumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\NumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount'], $options['currentPage']);
 				break;
 			case 'simple_numbers':
-				$paginator = new \KR\PaginatorBundle\Pagers\SimpleNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\SimpleNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount'], $options['currentPage']);
 				break;
 			case 'full':
-				$paginator = new \KR\PaginatorBundle\Pagers\FullPaginator($options['totalItems'], $options['limit'], $options['queryKey']);
+				$paginator = new \KR\PaginatorBundle\Pagers\FullPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['currentPage']);
 				break;
 			case 'full_numbers':
-				$paginator = new \KR\PaginatorBundle\Pagers\FullNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount']);
+				$paginator = new \KR\PaginatorBundle\Pagers\FullNumbersPaginator($options['totalItems'], $options['limit'], $options['queryKey'], $options['adjacentCount'], $options['currentPage']);
 				break;
 				
 		}

@@ -22,12 +22,12 @@ class FullNumbersPaginator extends AbstractNumbersPaginator
 	 * @param string $parameterName
 	 * @param integer $adjacentCount
 	 */
-	function __construct($totalItems, $limit = NULL, $parameterName = NULL, $adjacentCount = NULL)
+	function __construct($totalItems, $limit = NULL, $parameterName = NULL, $adjacentCount = NULL, $currentPage = NULL)
 	{
 		/**
 		 * Call parent constructor.
 		 */
-		parent::__construct($totalItems, $limit, $parameterName);
+		parent::__construct($totalItems, $limit, $parameterName, $currentPage);
 		$this->setAdjacentCount($adjacentCount);
 	}
 
