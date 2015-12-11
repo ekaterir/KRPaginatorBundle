@@ -12,82 +12,80 @@ namespace KR\PaginatorBundle\Util;
 
 abstract class AbstractPaginator
 {
-	
+
 	/**
 	 * @var integer
 	 */
 	private $currentPage = 0;
-	
+
 	/**
 	 * @var integer
 	 */
 	private $totalPagesCount = 0;
-	
+
 	/**
 	 * @var integer
 	 */
 	private $totalItemsCount = 0;
-	
+
 	/**
 	 * @var integer
 	 */
 	private $offset = 0;
-	
+
 	/**
 	 * @var integer
 	 */
 	private $limit = 10;
-	
+
 	/**
 	 * @var string
 	 */
 	private $queryKey = 'page';
-	
+
 	/**
 	 * @var array
 	 */
 	private $urlParts = [];
-	
+
 	/**
 	 * Constructor.
 	 * @param integer $limit
 	 * @param integer $totalItemsCount
 	 * @param string $queryKey
-	 */
-	function __construct($totalItemsCount, $limit = NULL, $queryKey = NULL)
+	*/
+	function __construct($totalItemsCount, $limit = NULL, $queryKey = NULL, $currentPage = null)
 	{
 		$this->setLimit($limit);
 		$this->setTotalItemsCount($totalItemsCount);
 		$this->setQueryKey($queryKey);
 		$this->setTotalPagesCount();
-		$this->setCurrentPage();
+		$this->setCurrentPage($currentPage);
 		$this->setOffset();
 		$this->setURLParts();
 	}
-	
+
 	/**
 	 * Set URL parts.
 	 */
 	public function setURLParts()
 	{
-		
+
 		try {
-
 			if (isset($_SERVER['REQUEST_URI'])) {
-
 				$urlParts = parse_url($_SERVER['REQUEST_URI']);
 				$this->urlParts = $urlParts;
-				return $this;			
-	
+				return $this;
+
 			}
-			
+				
 		} catch (\Exception $e) {
-			
+				
 			throw new \Exception ('Could not get url information');
-		
+
 		}
 	}
-	
+
 	/**
 	 * Get URL parts.
 	 * @return array
@@ -96,7 +94,7 @@ abstract class AbstractPaginator
 	{
 		return $this->urlParts;
 	}
-	
+
 	/**
 	 * Get query parameter name.
 	 * @return string
@@ -105,7 +103,7 @@ abstract class AbstractPaginator
 	{
 		return $this->queryKey;
 	}
-	
+
 	/**
 	 * Set parameter name.
 	 */
@@ -115,7 +113,7 @@ abstract class AbstractPaginator
 			$this->queryKey = $queryKey;
 		}
 	}
-	
+
 	/**
 	 * Get current page.
 	 * @return integer
@@ -124,7 +122,7 @@ abstract class AbstractPaginator
 	{
 		return $this->currentPage;
 	}
-	
+
 	/**
 	 * Set parameter value to 1 if not valid.
 	 * @return integer
@@ -138,24 +136,32 @@ abstract class AbstractPaginator
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * Set current page.
 	 */
-	public function setCurrentPage()
+	public function setCurrentPage($currentPage)
 	{
-
-		$parameter = $this->getQueryKey();
 		
-		if (isset($_GET[$parameter])) {
-			$this->currentPage = $this->_validateValue($_GET[$parameter]);
+		if ($currentPage != null) {
+			
+			$this->currentPage = $this->_validateValue($currentPage);
+			
 		} else {
-			$this->currentPage = 1;
+			
+			$parameter = $this->getQueryKey();
+	
+			if (isset($_GET[$parameter])) {
+				$this->currentPage = $this->_validateValue($_GET[$parameter]);
+			} else {
+				$this->currentPage = 1;
+			}
+			
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Get total pages.
 	 * @return integer
@@ -164,7 +170,7 @@ abstract class AbstractPaginator
 	{
 		return $this->totalPagesCount;
 	}
-	
+
 	/**
 	 * Set total pages.
 	 */
@@ -173,7 +179,7 @@ abstract class AbstractPaginator
 		$this->totalPagesCount = ceil($this->getTotalItemsCount() / $this->getLimit());
 		return $this;
 	}
-	
+
 	/**
 	 * Get total items count.
 	 * @return integer
@@ -182,7 +188,7 @@ abstract class AbstractPaginator
 	{
 		return $this->totalItemsCount;
 	}
-	
+
 	/**
 	 * Set total items count.
 	 */
@@ -194,7 +200,7 @@ abstract class AbstractPaginator
 		}
 		throw new \Exception('Total items must be a number.');
 	}
-	
+
 	/**
 	 * Get offset.
 	 * @return integer
@@ -203,7 +209,7 @@ abstract class AbstractPaginator
 	{
 		return $this->offset;
 	}
-	
+
 	/**
 	 * Set offset.
 	 */
@@ -212,7 +218,7 @@ abstract class AbstractPaginator
 		$this->offset = ($this->getCurrentPage() - 1) * $this->getLimit();
 		return $this;
 	}
-	
+
 	/**
 	 * Get limit.
 	 * @return integer
@@ -221,7 +227,7 @@ abstract class AbstractPaginator
 	{
 		return $this->limit;
 	}
-	
+
 	/**
 	 * Set limit.
 	 */
@@ -232,7 +238,7 @@ abstract class AbstractPaginator
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Get the previous page.
 	 * @return integer
@@ -245,7 +251,7 @@ abstract class AbstractPaginator
 			return $this->getCurrentPage();
 		}
 	}
-	
+
 	/**
 	 * Get the next page.
 	 * @return integer
@@ -258,37 +264,55 @@ abstract class AbstractPaginator
 			return $this->getCurrentPage();
 		}
 	}
-	
+
 	/**
 	 * Set URL query parameter.
 	 * @param integer $value	Page number
 	 */
 	public function addQueryValue($value)
 	{
-
 		try {
-		
+
 			$params = [];
 			$urlParts = $this->getURLParts();
-			
+				
 			if (isset($urlParts['query'])) {
 				parse_str($urlParts['query'], $params);
 			}
-			
+				
 			$params[$this->getQueryKey()] = $this->_validateValue($value);
-			
+				
 			return (isset($urlParts['path']) ? $urlParts['path'] : '/') . '?' . http_build_query($params);
-	    
+			 
 		} catch (\Exception $e) {
-
 			throw new \Exception('Could not paginate.');
-	    
 		}
+	}
+
+	/**
+	 * Get a range of items that appear on the current page.
+	 * @return string
+	 */
+	public function getCurrentItemsRange()
+	{
+
+		$currentPage = $this->getCurrentPage();
+		$limit = $this->getLimit();
+	
+		$from = ($currentPage - 1) * $limit + 1;
+		
+		if ($currentPage == $this->getTotalPagesCount()) {
+			$to = $this->getTotalItemsCount();
+		} else {
+			$to = $currentPage * $limit;
+		}
+	
+		return "$from - $to";
+	
 	}
 	
 	/**
 	 * Render the paginator.
 	 */
 	abstract public function render();
-
 }
